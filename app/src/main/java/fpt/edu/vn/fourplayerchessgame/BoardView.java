@@ -44,12 +44,12 @@ public class BoardView extends View {
             {"k4","p4","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","p2","k2"},
             {"b4","p4","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","p2","b2"},
             {"a4","p4","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","p2","q2"},
-            {"q4","p4","  ","p3","  ","  ","  ","  ","  ","  ","  ","  ","p2","a2"},
+            {"q4","p4","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","p2","a2"},
             {"b4","p4","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","p2","b2"},
             {"k4","p4","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","p2","k2"},
             {"r4","p4","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","p2","r2"},
-            {"xx","xx","xx","  ","p3","  ","p3","  ","  ","  ","  ","xx","xx","xx"},
-            {"xx","xx","xx","  ","  ","p3","  ","p3","p3","p3","p3","xx","xx","xx"},
+            {"xx","xx","xx","  ","  ","  ","  ","  ","  ","  ","  ","xx","xx","xx"},
+            {"xx","xx","xx","p3","p3","p3","p3","p3","p3","p3","p3","xx","xx","xx"},
             {"xx","xx","xx","r3","k3","b3","q3","a3","b3","k3","r3","xx","xx","xx"},
     };
 
@@ -191,7 +191,11 @@ public class BoardView extends View {
 
     private void moveSelectedPiece(int row, int column) {
         chessBoard[selectedPiece.getRow()][selectedPiece.getColumn()] = "  ";
-        chessBoard[row][column] = selectedPiece.getValue();
+        if (selectedPiece.getValue().charAt(0) == 'p' && isEndOfBoard(row, column)) {// pawn to be promoted
+            chessBoard[row][column] = "q" + selectedPiece.getValue().charAt(1);
+        } else {
+            chessBoard[row][column] = selectedPiece.getValue();
+        }
         selectedPiece = null;
         possibleMoves = new ArrayList<>();
     }
@@ -534,5 +538,9 @@ public class BoardView extends View {
             }
         }
         return false;
+    }
+
+    private boolean isEndOfBoard(int row, int column) {
+        return row == 0 || row == 13 || column == 0 || column == 13;
     }
 }
